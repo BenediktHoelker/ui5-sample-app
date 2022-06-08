@@ -2,18 +2,18 @@
 
 sap.ui.define(
 	['sap/ui/test/opaQunit', 'sap/ui/demo/todo/test/integration/pages/App'],
-	function (opaTest) {
-		'use strict';
+	(opaTest) => {
+		
 
 		QUnit.module('Filter');
 
 		opaTest(
 			"should show correct items when filtering for 'Active' items",
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage.iFilterForItems('active');
 
 				// Assertions
@@ -26,11 +26,11 @@ sap.ui.define(
 
 		opaTest(
 			"should show correct items when filtering for 'Completed' items",
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage.iFilterForItems('completed');
 
 				// Assertions
@@ -43,17 +43,17 @@ sap.ui.define(
 
 		opaTest(
 			"should show correct items when filtering for 'Completed' items and switch back to 'All'",
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage.iFilterForItems('completed');
 
 				// Assertions
 				Then.onTheAppPage.iShouldSeeItemCount(1);
 
-				//Actions
+				// Actions
 				When.onTheAppPage.iFilterForItems('all');
 
 				// Assertions

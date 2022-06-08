@@ -5,11 +5,11 @@ sap.ui.define(
 		'sap/ui/demo/todo/controller/App.controller',
 		'sap/ui/model/json/JSONModel'
 	],
-	function (ManagedObject, Controller, AppController, JSONModel) {
-		'use strict';
+	(ManagedObject, Controller, AppController, JSONModel) => {
+		
 
 		QUnit.module('Test model modification', {
-			beforeEach: function () {
+			beforeEach () {
 				this.oAppController = new AppController();
 				this.oViewStub = new ManagedObject({});
 				sinon.stub(Controller.prototype, 'getView').returns(this.oViewStub);
@@ -20,7 +20,7 @@ sap.ui.define(
 				this.oViewStub.setModel(this.oJSONModelStub);
 			},
 
-			afterEach: function () {
+			afterEach () {
 				Controller.prototype.getView.restore();
 
 				this.oViewStub.destroy();
@@ -50,7 +50,7 @@ sap.ui.define(
 
 		QUnit.test('Should toggle the completed items in the model', function (assert) {
 			// Arrange
-			var oModelData = {
+			const oModelData = {
 				todos: [
 					{
 						title: 'Start this app',
@@ -87,7 +87,7 @@ sap.ui.define(
 
 		QUnit.test('Should clear the completed items', function (assert) {
 			// Arrange
-			var oModelData = {
+			const oModelData = {
 				todos: [
 					{
 						title: 'Start this app1',
@@ -135,7 +135,7 @@ sap.ui.define(
 			'Should update items left count when no todos are loaded, yet',
 			function (assert) {
 				// Arrange
-				var oModelData = {};
+				const oModelData = {};
 				this.oJSONModelStub.setData(oModelData);
 
 				// initial assumption

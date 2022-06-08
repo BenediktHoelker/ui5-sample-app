@@ -1,7 +1,7 @@
 module.exports = function (config) {
-	'use strict';
+	
 
-	var chromeFlags = ['--window-size=1280,1024'];
+	const chromeFlags = ['--window-size=1280,1024'];
 
 	config.set({
 		frameworks: ['ui5'],

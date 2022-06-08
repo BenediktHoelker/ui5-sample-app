@@ -2,8 +2,8 @@
 
 sap.ui.define(
 	['sap/ui/Device', 'sap/ui/test/opaQunit', 'sap/ui/demo/todo/test/integration/pages/App'],
-	function (Device, opaTest) {
-		'use strict';
+	(Device, opaTest) => {
+		
 
 		QUnit.module('Search');
 
@@ -12,11 +12,11 @@ sap.ui.define(
 			return;
 		}
 
-		opaTest('should show correct item count after search (1)', function (Given, When, Then) {
+		opaTest('should show correct item count after search (1)', (Given, When, Then) => {
 			// Arrangements
 			Given.iStartMyApp();
 
-			//Actions
+			// Actions
 			When.onTheAppPage.iEnterTextForSearchAndPressEnter('earn');
 
 			// Assertions
@@ -26,11 +26,11 @@ sap.ui.define(
 			Then.iTeardownMyApp();
 		});
 
-		opaTest('should show correct item count after search (0)', function (Given, When, Then) {
+		opaTest('should show correct item count after search (0)', (Given, When, Then) => {
 			// Arrangements
 			Given.iStartMyApp();
 
-			//Actions
+			// Actions
 			When.onTheAppPage.iEnterTextForSearchAndPressEnter(
 				'there should not be an item for this search'
 			);
@@ -44,11 +44,11 @@ sap.ui.define(
 
 		opaTest(
 			'should show correct item count after search and clearing the search',
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage
 					.iEnterTextForSearchAndPressEnter('earn')
 					.and.iEnterTextForSearchAndPressEnter('');
@@ -63,11 +63,11 @@ sap.ui.define(
 
 		opaTest(
 			'should show correct item count after search and active items filter',
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage
 					.iEnterTextForSearchAndPressEnter('earn')
 					.and.iFilterForItems('active');
@@ -82,11 +82,11 @@ sap.ui.define(
 
 		opaTest(
 			'should show correct item count after search and completed items filter',
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage
 					.iEnterTextForSearchAndPressEnter('earn')
 					.and.iFilterForItems('completed');
@@ -101,11 +101,11 @@ sap.ui.define(
 
 		opaTest(
 			'should show correct item count after search and all items filter',
-			function (Given, When, Then) {
+			(Given, When, Then) => {
 				// Arrangements
 				Given.iStartMyApp();
 
-				//Actions
+				// Actions
 				When.onTheAppPage
 					.iEnterTextForSearchAndPressEnter('earn')
 					.and.iFilterForItems('all');
