@@ -7,8 +7,6 @@ sap.ui.define(
 		'sap/ui/demo/todo/test/integration/FilterJourney'
 	],
 	(Opa5, Startup) => {
-		
-
 		Opa5.extendConfig({
 			arrangements: new Startup(),
 			autoWait: true

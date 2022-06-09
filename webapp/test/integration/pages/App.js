@@ -19,19 +19,19 @@ sap.ui.require(
 		EnterText,
 		Press
 	) => {
-		
-
 		const sViewName = 'sap.ui.demo.todo.view.App';
 		const sAddToItemInputId = 'addTodoItemInput';
 		const sSearchTodoItemsInputId = 'searchTodoItemsInput';
 		const sItemListId = 'todoList';
 		const sToolbarId = Device.browser.mobile ? 'toolbar-footer' : 'toolbar';
-		const sClearCompletedId = Device.browser.mobile ? 'clearCompleted-footer' : 'clearCompleted';
+		const sClearCompletedId = Device.browser.mobile
+			? 'clearCompleted-footer'
+			: 'clearCompleted';
 
 		Opa5.createPageObjects({
 			onTheAppPage: {
 				actions: {
-					iEnterTextForNewItemAndPressEnter (text) {
+					iEnterTextForNewItemAndPressEnter(text) {
 						return this.waitFor({
 							id: sAddToItemInputId,
 							viewName: sViewName,
@@ -39,7 +39,7 @@ sap.ui.require(
 							errorMessage: 'The text cannot be entered'
 						});
 					},
-					iEnterTextForSearchAndPressEnter (text) {
+					iEnterTextForSearchAndPressEnter(text) {
 						this._waitForToolbar();
 						return this.waitFor({
 							id: sSearchTodoItemsInputId,
@@ -48,7 +48,7 @@ sap.ui.require(
 							errorMessage: 'The text cannot be entered'
 						});
 					},
-					iSelectTheLastItem (bSelected) {
+					iSelectTheLastItem(bSelected) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
@@ -66,24 +66,22 @@ sap.ui.require(
 							errorMessage: 'Last checkbox cannot be pressed'
 						});
 					},
-					iSelectAllItems (bSelected) {
+					iSelectAllItems(bSelected) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
 							actions: [
 								function (oList) {
-									oList.getItems().forEach(
-										(oListItem) => {
-											const oCheckbox = oListItem.getContent()[0].getItems()[0];
-											this._triggerCheckboxSelection(oCheckbox, bSelected);
-										}
-									);
+									oList.getItems().forEach((oListItem) => {
+										const oCheckbox = oListItem.getContent()[0].getItems()[0];
+										this._triggerCheckboxSelection(oCheckbox, bSelected);
+									});
 								}.bind(this)
 							],
 							errorMessage: 'checkbox cannot be pressed'
 						});
 					},
-					_triggerCheckboxSelection (oListItem, bSelected) {
+					_triggerCheckboxSelection(oListItem, bSelected) {
 						// determine existing selection state and ensure that it becomes <code>bSelected</code>
 						if (
 							(oListItem.getSelected() && !bSelected) ||
@@ -95,7 +93,7 @@ sap.ui.require(
 							oPress.executeOn(oListItem);
 						}
 					},
-					iClearTheCompletedItems () {
+					iClearTheCompletedItems() {
 						this._waitForToolbar();
 						return this.waitFor({
 							id: sClearCompletedId,
@@ -104,7 +102,7 @@ sap.ui.require(
 							errorMessage: 'checkbox cannot be pressed'
 						});
 					},
-					iFilterForItems (filterKey) {
+					iFilterForItems(filterKey) {
 						this._waitForToolbar();
 						return this.waitFor({
 							viewName: sViewName,
@@ -114,19 +112,20 @@ sap.ui.require(
 							errorMessage: 'SegmentedButton can not be pressed'
 						});
 					},
-					_waitForToolbar () {
+					_waitForToolbar() {
 						this.waitFor({
 							id: sToolbarId,
 							viewName: sViewName,
-							success (oToolbar) {
+							success(oToolbar) {
 								return this.waitFor({
 									controlType: 'sap.m.ToggleButton',
 									visible: false,
-									success (aToggleButtons) {
-										const oToggleButton = aToggleButtons.find((oButton) => (
+									success(aToggleButtons) {
+										const oToggleButton = aToggleButtons.find(
+											(oButton) =>
 												oButton.getId().startsWith(oToolbar.getId()) &&
 												oButton.getParent() === oToolbar
-											));
+										);
 										if (oToggleButton) {
 											this.waitFor({
 												id: oToggleButton.getId(),
@@ -146,7 +145,7 @@ sap.ui.require(
 				},
 
 				assertions: {
-					iShouldSeeTheItemBeingAdded (iItemCount, sLastAddedText) {
+					iShouldSeeTheItemBeingAdded(iItemCount, sLastAddedText) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
@@ -168,21 +167,16 @@ sap.ui.require(
 									}).isMatching(oInput);
 								}
 							],
-							success () {
+							success() {
 								Opa5.assert.ok(
 									true,
-									`The table has ${ 
-										iItemCount 
-										} item(s), with '${ 
-										sLastAddedText 
-										}' as last item`
+									`The table has ${iItemCount} item(s), with '${sLastAddedText}' as last item`
 								);
 							},
-							errorMessage:
-								`List does not have expected entry '${  sLastAddedText  }'.`
+							errorMessage: `List does not have expected entry '${sLastAddedText}'.`
 						});
 					},
-					iShouldSeeTheLastItemBeingCompleted (bSelected) {
+					iShouldSeeTheLastItemBeingCompleted(bSelected) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
@@ -199,13 +193,13 @@ sap.ui.require(
 									);
 								}
 							],
-							success () {
+							success() {
 								Opa5.assert.ok(true, 'The last item is marked as completed');
 							},
 							errorMessage: 'The last item is not disabled.'
 						});
 					},
-					iShouldSeeAllButOneItemBeingRemoved (sLastItemText) {
+					iShouldSeeAllButOneItemBeingRemoved(sLastItemText) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
@@ -226,19 +220,16 @@ sap.ui.require(
 									}).isMatching(oInput);
 								}
 							],
-							success () {
+							success() {
 								Opa5.assert.ok(
 									true,
-									`The table has 1 item, with '${ 
-										sLastItemText 
-										}' as Last item`
+									`The table has 1 item, with '${sLastItemText}' as Last item`
 								);
 							},
-							errorMessage:
-								`List does not have expected entry '${  sLastItemText  }'.`
+							errorMessage: `List does not have expected entry '${sLastItemText}'.`
 						});
 					},
-					iShouldSeeItemCount (iItemCount) {
+					iShouldSeeItemCount(iItemCount) {
 						return this.waitFor({
 							id: sItemListId,
 							viewName: sViewName,
@@ -248,11 +239,10 @@ sap.ui.require(
 									length: iItemCount
 								})
 							],
-							success () {
-								Opa5.assert.ok(true, `The table has ${  iItemCount  } item(s)`);
+							success() {
+								Opa5.assert.ok(true, `The table has ${iItemCount} item(s)`);
 							},
-							errorMessage:
-								`List does not have expected number of items '${  iItemCount  }'.`
+							errorMessage: `List does not have expected number of items '${iItemCount}'.`
 						});
 					}
 				}

@@ -26,7 +26,7 @@ sap.ui.define(
 			 */
 			addTodo() {
 				const model = this.getView().getModel();
-				const todos = model.getProperty('/todos').map((oTodo) => ({ ...oTodo }));
+				const todos = model.getProperty('/todos').map((todo) => ({ ...todo }));
 
 				todos.push({
 					title: model.getProperty('/newTodo'),
@@ -41,65 +41,56 @@ sap.ui.define(
 			 * Removes all completed items from the todo list.
 			 */
 			clearCompleted() {
-				const oModel = this.getView().getModel();
-				const aTodos = oModel.getProperty('/todos').map((oTodo) => ({ ...oTodo }));
+				const model = this.getView().getModel();
+				const todos = model.getProperty('/todos').filter(({ completed }) => !completed);
 
-				let i = aTodos.length;
-
-				while (i--) {
-					const oTodo = aTodos[i];
-					if (oTodo.completed) {
-						aTodos.splice(i, 1);
-					}
-				}
-
-				oModel.setProperty('/todos', aTodos);
+				model.setProperty('/todos', todos);
 			},
 
 			/**
 			 * Updates the number of items not yet completed
 			 */
 			updateItemsLeftCount() {
-				const oModel = this.getView().getModel();
-				const aTodos = oModel.getProperty('/todos') || [];
+				const model = this.getView().getModel();
+				const todos = model.getProperty('/todos') || [];
+				const itemsLeft = todos.filter(({ completed }) => !completed).length;
 
-				const iItemsLeft = aTodos.filter((oTodo) => oTodo.completed !== true).length;
-
-				oModel.setProperty('/itemsLeftCount', iItemsLeft);
+				model.setProperty('/itemsLeftCount', itemsLeft);
 			},
 
 			/**
 			 * Trigger search for specific items. The removal of items is disable as long as the search is used.
-			 * @param {sap.ui.base.Event} oEvent Input changed event
+			 * @param {sap.ui.base.Event} event Input changed event
 			 */
-			onSearch(oEvent) {
-				const oModel = this.getView().getModel();
+			onSearch(event) {
+				const model = this.getView().getModel();
 
 				// First reset current filters
 				this._searchFilters = [];
 
 				// add filter for search
-				this.sSearchQuery = oEvent.getSource().getValue();
-				if (this.sSearchQuery && this.sSearchQuery.length > 0) {
-					oModel.setProperty('/itemsRemovable', false);
-					const filter = new Filter('title', FilterOperator.Contains, this.sSearchQuery);
+				this._searchQuery = event.getSource().getValue();
+
+				if (this._searchQuery && this._searchQuery.length > 0) {
+					model.setProperty('/itemsRemovable', false);
+					const filter = new Filter('title', FilterOperator.Contains, this._searchQuery);
 					this._searchFilters.push(filter);
 				} else {
-					oModel.setProperty('/itemsRemovable', true);
+					model.setProperty('/itemsRemovable', true);
 				}
 
 				this._applyListFilters();
 			},
 
-			onFilter(oEvent) {
+			onFilter(event) {
 				// First reset current filters
 				this._tabFilters = [];
 
 				// add filter for search
-				this.sFilterKey = oEvent.getParameter('item').getKey();
+				this._filterKey = event.getParameter('item').getKey();
 
 				// eslint-disable-line default-case
-				switch (this.sFilterKey) {
+				switch (this._filterKey) {
 					case 'active':
 						this._tabFilters.push(new Filter('completed', FilterOperator.EQ, false));
 						break;
@@ -115,33 +106,33 @@ sap.ui.define(
 			},
 
 			_applyListFilters() {
-				const oList = this.byId('todoList');
-				const oBinding = oList.getBinding('items');
+				const list = this.byId('todoList');
+				const listBinding = list.getBinding('items');
 
-				oBinding.filter(this._searchFilters.concat(this._tabFilters), 'todos');
+				listBinding.filter(this._searchFilters.concat(this._tabFilters), 'todos');
 
-				let sI18nKey;
-				if (this.sFilterKey && this.sFilterKey !== 'all') {
-					if (this.sFilterKey === 'active') {
-						sI18nKey = 'ACTIVE_ITEMS';
+				let i18nKey;
+				if (this._filterKey && this._filterKey !== 'all') {
+					if (this._filterKey === 'active') {
+						i18nKey = 'ACTIVE_ITEMS';
 					} else {
 						// completed items: sFilterKey = "completed"
-						sI18nKey = 'COMPLETED_ITEMS';
+						i18nKey = 'COMPLETED_ITEMS';
 					}
-					if (this.sSearchQuery) {
-						sI18nKey += '_CONTAINING';
+					if (this._searchQuery) {
+						i18nKey += '_CONTAINING';
 					}
-				} else if (this.sSearchQuery) {
-					sI18nKey = 'ITEMS_CONTAINING';
+				} else if (this._searchQuery) {
+					i18nKey = 'ITEMS_CONTAINING';
 				}
 
-				let sFilterText;
-				if (sI18nKey) {
-					const oResourceBundle = this.getView().getModel('i18n').getResourceBundle();
-					sFilterText = oResourceBundle.getText(sI18nKey, [this.sSearchQuery]);
+				let filterText;
+				if (i18nKey) {
+					const resBundle = this.getView().getModel('i18n').getResourceBundle();
+					filterText = resBundle.getText(i18nKey, [this._searchQuery]);
 				}
 
-				this.getView().getModel('view').setProperty('/filterText', sFilterText);
+				this.getView().getModel('view').setProperty('/filterText', filterText);
 			}
 		})
 );

@@ -3,8 +3,6 @@
 sap.ui.define(
 	['sap/ui/test/opaQunit', 'sap/ui/demo/todo/test/integration/pages/App'],
 	(opaTest) => {
-		
-
 		QUnit.module('Filter');
 
 		opaTest(

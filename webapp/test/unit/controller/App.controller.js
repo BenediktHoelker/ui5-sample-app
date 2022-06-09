@@ -6,10 +6,8 @@ sap.ui.define(
 		'sap/ui/model/json/JSONModel'
 	],
 	(ManagedObject, Controller, AppController, JSONModel) => {
-		
-
 		QUnit.module('Test model modification', {
-			beforeEach () {
+			beforeEach() {
 				this.oAppController = new AppController();
 				this.oViewStub = new ManagedObject({});
 				sinon.stub(Controller.prototype, 'getView').returns(this.oViewStub);
@@ -20,7 +18,7 @@ sap.ui.define(
 				this.oViewStub.setModel(this.oJSONModelStub);
 			},
 
-			afterEach () {
+			afterEach() {
 				Controller.prototype.getView.restore();
 
 				this.oViewStub.destroy();

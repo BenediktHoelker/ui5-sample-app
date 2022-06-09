@@ -1,5 +1,6 @@
-sap.ui.define(['sap/ui/test/Opa5'], (Opa5) => Opa5.extend('sap.ui.demo.todo.test.integration.arrangements.Startup', {
-		iStartMyApp () {
+sap.ui.define(['sap/ui/test/Opa5'], (Opa5) =>
+	Opa5.extend('sap.ui.demo.todo.test.integration.arrangements.Startup', {
+		iStartMyApp() {
 			this.iStartMyUIComponent({
 				componentConfig: {
 					name: 'sap.ui.demo.todo',
@@ -8,4 +9,5 @@ sap.ui.define(['sap/ui/test/Opa5'], (Opa5) => Opa5.extend('sap.ui.demo.todo.test
 				}
 			});
 		}
-	}));
+	})
+);

@@ -3,8 +3,6 @@
 sap.ui.define(
 	['sap/ui/Device', 'sap/ui/test/opaQunit', 'sap/ui/demo/todo/test/integration/pages/App'],
 	(Device, opaTest) => {
-		
-
 		QUnit.module('Search');
 
 		if (Device.browser.mobile) {

@@ -1,6 +1,4 @@
 module.exports = function (config) {
-	
-
 	const chromeFlags = ['--window-size=1280,1024'];
 
 	config.set({
