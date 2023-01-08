@@ -31,7 +31,7 @@
 		"karma-coverage": "^2.2.0",
 		"karma-ui5": "^2.4.0",
 		"local-web-server": "^5.2.1",
-		"prettier": "^2.6.2",
+		"prettier": "^2.8.2",
 		"rimraf": "^3.0.2"
 	}
 }
